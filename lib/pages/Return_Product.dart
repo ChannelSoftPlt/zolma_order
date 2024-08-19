@@ -164,7 +164,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                   ],
                 ),
                 onPressed: () async {
-                  String cameraScanResult = await BarcodeScanner.scan();
+                  String cameraScanResult = (await BarcodeScanner.scan()) as String;
                   catchDealer(cameraScanResult);
                 },
               ),

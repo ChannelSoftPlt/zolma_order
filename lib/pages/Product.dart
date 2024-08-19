@@ -317,10 +317,10 @@ class _productpageState extends State<productpage> {
 
   Future barcodeScanning() async {
     try {
-      String barcode = await BarcodeScanner.scan();
+      String barcode = (await BarcodeScanner.scan()) as String;
       setState(() => this.barcode = barcode);
     } on PlatformException catch (e) {
-      if (e.code == BarcodeScanner.CameraAccessDenied) {
+      if (e.code == BarcodeScanner.cameraAccessDenied) {
         setState(() {
           this.barcode = 'No camera permission!';
         });

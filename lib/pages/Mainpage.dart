@@ -23,7 +23,6 @@ class _IndexPageState extends State<IndexPage> {
   List<Promotion> promotionImage = [];
   DateTime currentBackPressTime;
 
-
   Future fetchPromotion() async {
     return await Domain.callApi(Domain.getpromotion, {
       'read': '1',
@@ -59,7 +58,6 @@ class _IndexPageState extends State<IndexPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return new Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blueGrey[400],
@@ -106,9 +104,7 @@ class _IndexPageState extends State<IndexPage> {
                   * */
                     promotionImage = [];
                     List promotions = data['Promotion'];
-                    promotionImage.addAll(promotions
-                        .map((jsonObject) => Promotion.fromJson(jsonObject))
-                        .toList());
+                    promotionImage.addAll(promotions.map((jsonObject) => Promotion.fromJson(jsonObject)).toList());
 
                     return mainContent();
                   } else {
@@ -135,60 +131,59 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   Widget promotionList() {
-    return promotionImage.length > 0 ?  Expanded(
-      child: ListView.builder(
-        scrollDirection: Axis.vertical,
-        shrinkWrap: true,
-        itemBuilder: (c, i) => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            FlatButton(
-              onPressed:(){
-                if( promotionImage[i].checklinktype == "product"){
-                  navigateToNextActivity(context, promotionImage[i].productid);
-                }else{
-                  _launchYoutubeVideo(promotionImage[i].youtubelink);
-                }
-              },
-              child: Card(
-                  elevation: 3,
-                  color: Colors.white,
-                  child: Column(
-                    children: [
-                      new Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Image.network(promotionlink + promotionImage[i].link)),
-                      new Container(
-                        padding: const EdgeInsets.all(10.0),
+    return promotionImage.length > 0
+        ? Expanded(
+            child: ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemBuilder: (c, i) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      if (promotionImage[i].checklinktype == "product") {
+                        navigateToNextActivity(context, promotionImage[i].productid);
+                      } else {
+                        _launchYoutubeVideo(promotionImage[i].youtubelink);
+                      }
+                    },
+                    child: Card(
+                        elevation: 3,
+                        color: Colors.white,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(promotionImage[i].name,
-                                style: Theme.of(context).textTheme.title),
-                            ReadMoreText(
-                              promotionImage[i].remark,
-                              trimLines: 1,
-                              colorClickableText: Colors.pink,
-                              trimMode: TrimMode.Line,
-                              trimCollapsedText: 'Show more',
-                              trimExpandedText: 'Show less',
-                              moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                            ),
+                            new Container(padding: const EdgeInsets.all(8.0), child: Image.network(promotionlink + promotionImage[i].link)),
+                            new Container(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(promotionImage[i].name, style: Theme.of(context).textTheme.headline6),
+                                  ReadMoreText(
+                                    promotionImage[i].remark,
+                                    trimLines: 1,
+                                    colorClickableText: Colors.pink,
+                                    trimMode: TrimMode.Line,
+                                    trimCollapsedText: 'Show more',
+                                    trimExpandedText: 'Show less',
+                                    moreStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                            )
                           ],
-                        ),
-                      )
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                  )),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        )),
+                  ),
+                ],
+              ),
+              itemCount: promotionImage.length,
             ),
-          ],
-        ),
-        itemCount: promotionImage.length,
-      ),
-    ) : Center(
-      child: Text("No Promotion"),
-    );
+          )
+        : Center(
+            child: Text("No Promotion"),
+          );
   }
 
   List<int> countLength() {
@@ -222,8 +217,7 @@ class _IndexPageState extends State<IndexPage> {
   void getlog() async {
     dynamic dealerid = FlutterSession().get("dealerid");
     //print("testing: "+_deviceData.toString());
-    return await Domain.callApi(Domain.getdealerinfo,
-        {'create': '1', 'action': "Logout", 'dealerid': dealerid.toString()});
+    return await Domain.callApi(Domain.getdealerinfo, {'create': '1', 'action': "Logout", 'dealerid': dealerid.toString()});
   }
 
   Future<void> _launchYoutubeVideo(String _youtubeUrl) async {
